@@ -1,83 +1,118 @@
 #🐍
 import random
-pos = [[0, 0], [], [], [], []]
+import keyboard
+import time
+
+pos = [[4, 4], [], [], [], []]
 apPos = []
 empAr = []
+direction = "n"
+score = 0
+speed = 8000
 while True:
+    print("\n\n\n\n\n", score)
+    grid = [["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"],["⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜","⬜"]]
 
-    grid = [["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  ","  ","  ","  "]]
-
-    for b in pos:
+    for b in range(len(pos)):
         try:
-            y = b[0]
-            x = b[1]
-            grid[x][y] = "🐍"
+            if b == 0:
+                y = pos[b][0]
+                x = pos[b][1]
+                grid[x][y] = "⬛"
+            else:
+                y = pos[b][0]
+                x = pos[b][1]
+                grid[x][y] = "🟩"
         except:
             pass
 
 
     if apPos == []:
-        xAp = random.randint(0,9)
-        yAp = random.randint(0,9)
-        apPos = [xAp,yAp]
 
         addApple = False
         while addApple == False:
-            if grid[xAp][yAp] != "🐍":
+            xAp = random.randint(0, 9)
+            yAp = random.randint(0, 9)
+            apPos = [xAp, yAp]
+
+            if grid[yAp][xAp] != "🟩" and grid[yAp][xAp] != "🍎" and grid[yAp][xAp] != "⬛":
                 addApple = True
 
     grid[yAp][xAp] = "🍎"
     for i in range(len(grid)):
         print(grid[i])
+    time.sleep(.15)
 
-    move = input(":")
-    if move == "w":
-        x = pos[0][0]
-        y = pos[0][1]
-        y -= 1
-        direction = "n"
-    elif move == "s":
-        x = pos[0][0]
-        y = pos[0][1]
-        y += 1
-        direction = "s"
-    elif move == "a":
-        x = pos[0][0]
-        y = pos[0][1]
-        x -= 1
-        direction = "w"
-    elif move == "d":
-        x = pos[0][0]
-        y = pos[0][1]
-        x += 1
-        direction = "e"
-    else:
-        if direction == "n":
+    loops = 0
+    movement = True
+    while movement == True:
+        if keyboard.is_pressed("w"):
+            """
             x = pos[0][0]
             y = pos[0][1]
             y -= 1
-        elif direction == "e":
-            x = pos[0][0]
-            y = pos[0][1]
-            x += 1
-            direction = "e"
-        elif direction == "s":
+            """
+            direction = "n"
+            movement = False
+        if keyboard.is_pressed("s"):
+            """
             x = pos[0][0]
             y = pos[0][1]
             y += 1
-        elif direction == "w":
+            """
+            direction = "s"
+            movement = False
+        if keyboard.is_pressed("a"):
+            """
             x = pos[0][0]
             y = pos[0][1]
             x -= 1
+            """
+            direction = "w"
+            movement = False
+        if keyboard.is_pressed("d"):
+            """
+            x = pos[0][0]
+            y = pos[0][1]
+            x += 1
+            """
+            direction = "e"
+            movement = False
+        if loops > speed or movement == False:
+            print("3")
+            if direction == "n":
+                x = pos[0][0]
+                y = pos[0][1]
+                y -= 1
+                movement = False
+            if direction == "e":
+                x = pos[0][0]
+                y = pos[0][1]
+                x += 1
+                movement = False
+            if direction == "s":
+                x = pos[0][0]
+                y = pos[0][1]
+                y += 1
+                movement = False
+            if direction == "w":
+                x = pos[0][0]
+                y = pos[0][1]
+                x -= 1
+                movement = False
+            print("4")
+            time.sleep(.1)
+        loops += 1
 
-    print(apPos, [x,y])
+
+
     if apPos == [x,y]:
-        print("in")
         pos.append(empAr)
         apPos = []
+        score += 1
+        speed -= 200
 
     for a in range(len(pos)):
-        print("1")
         a = len(pos) - a -1
         if a > 0:
             pos[a] = pos[a-1]
@@ -90,5 +125,3 @@ while True:
                 exit()
             else:
                 pos[0] = [x,y]
-
-    print(pos)
